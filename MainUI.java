@@ -7,7 +7,8 @@ import java.sql.*;
 
 public class MainUI extends JFrame implements ActionListener {  
 
-    //定义组件   
+    private static final String String = null;
+	//定义组件   
     JButton jb1,jb2,jb3=null;  
     JRadioButton jrb1,jrb2=null;  
     JPanel jp1,jp2,jp3,jp4=null;  
@@ -19,18 +20,18 @@ public class MainUI extends JFrame implements ActionListener {
     String url = "jdbc:mysql://localhost:3306/SC";
 	String user = "root";
 	String password = "123456";
-    
+	
     //设定用户名和密码  
-    final String stu_name="王小明";  
-    final String stu_pwd="1"; 
-    final String stu_num="14140301"; 
+    
     final String tea_name="王老师";  
     final String tea_pwd="1";  
     final String tea_num="00001"; 
-
+    public static String stu_name = "12222";
+    public static String stu_id = "1";
+    public static String stu_co = "1";
+    
     public static void main(String[] args) 
     {  
-
         MainUI mUI=new MainUI();  
     }  
     public MainUI()  
@@ -109,8 +110,7 @@ public class MainUI extends JFrame implements ActionListener {
     	      e.printStackTrace();
     	    }
     	    try {
-    	      Connection connect = DriverManager.getConnection(
-    	          url,user,password);
+    	      Connection connect = DriverManager.getConnection(url,user,password);
     	           //连接URL为   jdbc:mysql//服务器地址/数据库名  ，后面的2个参数分别是登陆用户名和密码
 
     	      System.out.println("Success connect Mysql server!");
@@ -146,7 +146,11 @@ public class MainUI extends JFrame implements ActionListener {
                   tealogin();                               //连接到教师的方法 页面
             }else if(jrb2.isSelected()) //学生在登录系统  
             {  
-                  stulogin();                               //连接到学生的方法 页面
+//            	MainUI a = new MainUI();
+//            	a.edit(jtf.getText());
+            	
+
+                stulogin();                               //连接到学生的方法 页面
             }  
 
         }else if(e.getActionCommand()=="重置")  
@@ -165,13 +169,17 @@ public class MainUI extends JFrame implements ActionListener {
     	try {
 			Connection connect = DriverManager.getConnection(url, user, password);
 			Statement stmt = connect.createStatement();
-  	      	ResultSet rs = stmt.executeQuery("select * from stu_name");
+  	      	ResultSet rs = stmt.executeQuery("select * from stu");
   	      	while(rs.next())
   	      	{
   	      		String getStuName = new String(rs.getString("name"));
   	      		String getStuPasswd = new String(rs.getString("password"));
+  	      		
   	      		if(getStuName.equals(jtf.getText()) && getStuPasswd.equals(jpf.getText()))
-  	      		{
+  	      		{ 	      			
+  	      			MainUI.stu_name = jtf.getText();
+  	      			MainUI.stu_id = new String(rs.getString("stu_id"));
+  	      			MainUI.stu_co = new String(rs.getString("college"));
   	      			flag = 1;
   	      			break;
   	      		}
@@ -226,5 +234,23 @@ public class MainUI extends JFrame implements ActionListener {
         jtf.setText("");  
         jpf.setText("");  
     }  
-
+    
+//    public void edit(String x)
+//    {
+//    	stun = x;
+//    }
+    
+    public String getStuname()
+    {
+    	return stu_name;
+    }
+    public String getStuid()
+    {
+    	return stu_id;
+    }
+    public String getStucollege()
+    {
+    	return stu_co;
+    }
+    
 } 
