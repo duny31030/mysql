@@ -16,6 +16,10 @@ public class MainUI extends JFrame implements ActionListener {
     JPasswordField jpf=null;  
     ButtonGroup bg=null;  
 
+    String url = "jdbc:mysql://localhost:3306/SC";
+	String user = "root";
+	String password = "123456";
+    
     //设定用户名和密码  
     final String stu_name="王小明";  
     final String stu_pwd="1"; 
@@ -24,7 +28,8 @@ public class MainUI extends JFrame implements ActionListener {
     final String tea_pwd="1";  
     final String tea_num="00001"; 
 
-    public static void main(String[] args) {  
+    public static void main(String[] args) 
+    {  
 
         MainUI mUI=new MainUI();  
     }  
@@ -105,7 +110,7 @@ public class MainUI extends JFrame implements ActionListener {
     	    }
     	    try {
     	      Connection connect = DriverManager.getConnection(
-    	          "jdbc:mysql://localhost:3306/test","root","123456");
+    	          url,user,password);
     	           //连接URL为   jdbc:mysql//服务器地址/数据库名  ，后面的2个参数分别是登陆用户名和密码
 
     	      System.out.println("Success connect Mysql server!");
@@ -130,7 +135,8 @@ public class MainUI extends JFrame implements ActionListener {
     
     
     
-    public void actionPerformed(ActionEvent e) {            //事件判断
+    public void actionPerformed(ActionEvent e)   //事件判断
+    {            
 
         if(e.getActionCommand()=="登录")  
         {  
@@ -155,13 +161,11 @@ public class MainUI extends JFrame implements ActionListener {
     {  	
     	int flag = 0;
     	
-    	String url = "jdbc:mysql://localhost:3306/test";
-    	String user = "root";
-    	String passwd = "123456";
+    	
     	try {
-			Connection connect = DriverManager.getConnection(url, user, passwd);
+			Connection connect = DriverManager.getConnection(url, user, password);
 			Statement stmt = connect.createStatement();
-  	      	ResultSet rs = stmt.executeQuery("select * from user");
+  	      	ResultSet rs = stmt.executeQuery("select * from stu_name");
   	      	while(rs.next())
   	      	{
   	      		String getStuName = new String(rs.getString("name"));
