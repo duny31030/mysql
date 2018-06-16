@@ -23,16 +23,17 @@ public class MainUI extends JFrame implements ActionListener {
 	
     //设定用户名和密码  
     
-    final String tea_name="王老师";  
-    final String tea_pwd="1";  
-    final String tea_num="00001"; 
-    public static String stu_name = "12222";
-    public static String stu_id = "1";
-    public static String stu_co = "1";
+	public static String tea_name="1";  
+//	public static String tea_pwd="1";  
+	public static String tea_id="1"; 
+    public static String stu_name = "2";
+    public static String stu_id = "2";
+    public static String stu_co = "2";
     
     public static void main(String[] args) 
     {  
         MainUI mUI=new MainUI();  
+//    	new MainUI();
     }  
     public MainUI()  
     {
@@ -48,7 +49,7 @@ public class MainUI extends JFrame implements ActionListener {
         jb3.addActionListener(this);  
         
         // 添加教师、学生单选框
-        jrb1=new JRadioButton("教师");  
+        jrb1=new JRadioButton("管理员");  
         jrb2=new JRadioButton("学生");  
         bg=new ButtonGroup();  
         bg.add(jrb1);  
@@ -116,15 +117,8 @@ public class MainUI extends JFrame implements ActionListener {
     	      System.out.println("Success connect Mysql server!");
     	      Statement stmt = connect.createStatement();
 //    	      ResultSet rs = stmt.executeQuery("select * from user");
-//    	                                                              //user 为你表的名称
-////    	      String getName = rs.getString("name");
-////    	      System.out.println("name = " + getName);
-//    	      rs.next();
-//    	      String getName = new String(rs.getString("name"));
-//    	      System.out.println("name = " + getName);
-    	//while (rs.next()) {
-//    	        System.out.println(rs.getString("name"));
-//    	      }
+
+
     	    }
     	    
     	    catch (Exception e) {
@@ -135,38 +129,36 @@ public class MainUI extends JFrame implements ActionListener {
     
     
     
-    public void actionPerformed(ActionEvent e)   //事件判断
+    public void actionPerformed(ActionEvent e)   // 事件判断
     {            
 
         if(e.getActionCommand()=="登录")  
         {  
-            //如果选中教师登录  
+            // 如果选中管理员登录  
             if(jrb1.isSelected())  
             {  
-                  tealogin();                               //连接到教师的方法 页面
-            }else if(jrb2.isSelected()) //学生在登录系统  
+                  tealogin();   // 连接到管理员的方法 页面
+            }else if(jrb2.isSelected()) // 学生在登录系统  
             {  
-//            	MainUI a = new MainUI();
-//            	a.edit(jtf.getText());
-            	
-
-                stulogin();                               //连接到学生的方法 页面
+               stulogin();   // 连接到学生的方法 页面
             }  
 
         }else if(e.getActionCommand()=="重置")  
         {  
-                  clear();   // 清楚文本框  
-        }             
+                  clear();   // 清除文本框  
+        }else if(e.getActionCommand()=="退出")
+        {
+        	System.exit(0);   // 退出
+        }
 
     }  
 
      //学生登录判断方法  
     public void stulogin()  
     {  	
-    	int flag = 0;
-    	
-    	
-    	try {
+    	int flag = 0; 	
+    	try 
+    	{
 			Connection connect = DriverManager.getConnection(url, user, password);
 			Statement stmt = connect.createStatement();
   	      	ResultSet rs = stmt.executeQuery("select * from stu");
@@ -184,6 +176,7 @@ public class MainUI extends JFrame implements ActionListener {
   	      			break;
   	      		}
   	      	}
+  	      connect.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,9 +185,10 @@ public class MainUI extends JFrame implements ActionListener {
         if(flag == 1)  
         {            
             JOptionPane.showMessageDialog(null,"登录成功！","提示消息",JOptionPane.WARNING_MESSAGE);           
-            dispose();        
+            MainUI.this.dispose();        
             clear();            
-            StdUI ui=new StdUI();       //创建新界面  
+//            StdUI ui=new StdUI();
+            new StdUI();       //创建新界面  
         }
         else
         {  
@@ -203,30 +197,49 @@ public class MainUI extends JFrame implements ActionListener {
             clear();  
         }
     }  
-    //教师登录判断方法  
+    //管理员登录判断方法  
     public void tealogin()  
     {  
-        if(tea_name.equals(jtf.getText())&&tea_pwd.equals(jpf.getText()))  
+    	int flag = 0; 	
+    	try 
+    	{
+			Connection connect = DriverManager.getConnection(url, user, password);
+			Statement stmt = connect.createStatement();
+  	      	ResultSet rs = stmt.executeQuery("select * from tea");
+  	      	while(rs.next())
+  	      	{
+  	      		String getTeaName = new String(rs.getString("name"));
+  	      		String getTeaPassword = new String(rs.getString("password"));
+  	      		
+  	      		if(getTeaName.equals(jtf.getText()) && getTeaPassword.equals(jpf.getText()))
+  	      		{ 	      			
+  	      			MainUI.tea_name = jtf.getText();
+  	      			MainUI.tea_id = new String(rs.getString("tea_id"));
+//  	      			MainUI.stu_co = new String(rs.getString("college"));
+  	      			flag = 1;
+  	      			break;
+  	      		}
+  	      	}
+  	      connect.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+        if(flag == 1)  
         {  
 
              JOptionPane.showMessageDialog(null,"登录成功！","提示消息",JOptionPane.WARNING_MESSAGE);  
              clear();         
-             dispose();             
-             TerUI ui=new TerUI();  //创建一个新界面  
-        }else if(jtf.getText().isEmpty() && jpf.getText().isEmpty())  
-        {  
-            JOptionPane.showMessageDialog(null,"请输入用户名和密码！","提示消息",JOptionPane.WARNING_MESSAGE);  
-        }else if(jtf.getText().isEmpty())  
-        {  
-            JOptionPane.showMessageDialog(null,"请输入用户名！","提示消息",JOptionPane.WARNING_MESSAGE);  
-        }else if(jpf.getText().isEmpty())  
-        {  
-            JOptionPane.showMessageDialog(null,"请输入密码！","提示消息",JOptionPane.WARNING_MESSAGE);  
-        }else  
-        {  
-            JOptionPane.showMessageDialog(null,"用户名或者密码错误！\n请重新输入","提示消息",JOptionPane.ERROR_MESSAGE);  
-            clear();  //清空输入框  
-        }  
+             MainUI.this.dispose();             
+//             TerUI ui=new TerUI();
+             new TerUI();  //创建一个新界面  
+        }
+        else
+        {   
+        	JOptionPane.showMessageDialog(null,"用户名或者密码错误！\n请重新输入","提示消息",JOptionPane.ERROR_MESSAGE);  
+        	clear();  //清空输入框  
+        }
     }  
     //清空文本框和密码框  
     public  void clear()  
@@ -240,15 +253,27 @@ public class MainUI extends JFrame implements ActionListener {
 //    	stun = x;
 //    }
     
-    public String getStuname()
+    //向TerUI传值
+    public static String getTeaname()
+    {
+    	return tea_name;
+    }
+    public static String getTeaid()
+    {
+    	return tea_id;
+    }
+
+    
+    // 向StdUI传值
+    public static String getStuname()
     {
     	return stu_name;
     }
-    public String getStuid()
+    public static String getStuid()
     {
     	return stu_id;
     }
-    public String getStucollege()
+    public static String getStucollege()
     {
     	return stu_co;
     }

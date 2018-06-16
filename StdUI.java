@@ -22,10 +22,10 @@ public class StdUI extends JFrame implements ActionListener
         }  
 
 
-        private MainUI MainUI() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+//        private MainUI MainUI() {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
 
 
 		//****************************事件判断**********************
@@ -51,12 +51,12 @@ public class StdUI extends JFrame implements ActionListener
             jlb7=new JLabel("学院：");
             jlb3=new JLabel("最新公告："); 
             jlb3.setForeground(Color.red);
-            jlb4=new JLabel("我院举行学生体测通知");
+            jlb4=new JLabel("系统将于明日进行临时维护");
 //            String stun = new MainUI().getStu();
             
-            jlb5=new JLabel(new MainUI().getStuname());
-            jlb6=new JLabel(new MainUI().getStuid());
-            jlb8=new JLabel(new MainUI().getStucollege());
+            jlb5=new JLabel(MainUI.getStuname());
+            jlb6=new JLabel(MainUI.getStuid());
+            jlb8=new JLabel(MainUI.getStucollege());
             
             jp1.add(jlb1); 
             jp1.add(jlb5);

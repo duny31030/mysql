@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;  
 import javax.swing.JButton;
 import Main.MainUI;  
+
 public class TerUI extends JFrame implements ActionListener  
 {   
          //定义组件  
@@ -15,10 +16,11 @@ public class TerUI extends JFrame implements ActionListener
         public static void main(String[] args) {            
           TerUI  ui=new TerUI();  
         }    
+        
         public  TerUI()  
         {  
             //创建组件  
-            jb1=new JButton("课程管理");
+            jb1=new JButton("学生管理");
             jb1.setForeground(Color.BLUE);
             jb2=new JButton("学生名单");  
             jb2.setForeground(Color.BLUE);
@@ -31,9 +33,9 @@ public class TerUI extends JFrame implements ActionListener
             jlb2=new JLabel("工号：");  
             jlb3=new JLabel("最新公告："); 
             jlb3.setForeground(Color.red);
-            jlb4=new JLabel("我院举行体测的通知");  
-            jlb5=new JLabel(new MainUI().tea_name);
-            jlb6=new JLabel(new MainUI().tea_num);
+            jlb4=new JLabel("系统将于明日进行临时维护");  
+            jlb5=new JLabel(MainUI.getTeaname());
+            jlb6=new JLabel(MainUI.getTeaid());
 
             jp1.add(jlb1); 
             jp1.add(jlb5);
@@ -61,7 +63,7 @@ public class TerUI extends JFrame implements ActionListener
         public void actionPerformed(ActionEvent e) {  
              if(e.getSource() == jb1){              
                   dispose();  
-                  new KeChengGuanLiUI();                //创建一个新界面  
+                  new XueShengGuanLiUI();                //创建一个新界面  
                 }else if(e.getSource() == jb2){
                   dispose();  
                   new XueShengMingDanUI();              //创建一个新界面  
